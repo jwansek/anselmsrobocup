@@ -18,6 +18,7 @@ read from the threads. There are 7 inputs to the program, which are:
 (int) distance, in cm, of the reading of the left ultrasonic sensor
 
 >US_R
+
 ditto but with the right
 
 >compass
@@ -38,7 +39,7 @@ boolean if required.
 
 angle in degrees as a bearing from the front of the robot of the ball
 
-##Useful links
+Useful links
 
 >rcj.robocup.org/rcj2017/soccer_2017.pdf
 
