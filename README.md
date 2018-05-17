@@ -41,10 +41,6 @@ angle in degrees as a bearing from the front of the robot of the ball
 
 Useful links
 
->rcj.robocup.org/rcj2017/soccer_2017.pdf
+>http://rcj.robocup.org/rcj2018/soccer_2018.pdf
 
 2017 rules
-
->amazon.co.uk/SB-Motorshield-Raspberry-expansion-ultrasonic/dp/B01MQ2MZDV/
-
-we need to buy this. has links to the docs on how to program this thing
