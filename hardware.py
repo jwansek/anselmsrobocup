@@ -4,21 +4,26 @@ from time import sleep
 class DCMotor:
     def __init__(self, p_pwm, p_dir, initpower):
         '''A class for communicating with an Ardumoto motor controller.
-        remember to call GPIO.setmode(GPIO.BOARD) or GPIO.setmode(GPIO.BCM)
-        before initalising this class. This changes the pin naming scheme. TBH,
-        you probably just want to use GPIO.BOARD. This class takes three arguments:
-        the pin connected to the pwm input on the ardumoto, the dir input on the
-        ardumoto, and an initial power to use. Power is a percentage, but on the lower
-        end there may not be much difference. No motors  will fire until you want them to
-        do. You can control the motors in three ways, forwards, backwards and stop.
-        forwards and backwards have an optional argument, the power to use. This
-        will change the power attribute. Else the method will use the current value of the
-        power attribute. You can also change the power by changing the value of the power
-        attribute. Remember to cleanup by deleting the object by using the 'del' keyword.
+        remember to call GPIO.setmode(GPIO.BOARD) or
+        GPIO.setmode(GPIO.BCM) before initalising this class. This
+        changes the pin naming scheme. TBH, you probably just want to
+        use GPIO.BOARD. This class takes three arguments: the pin
+        connected to the pwm input on the ardumoto, the dir input on the
+        ardumoto, and an initial power to use. Power is a percentage, but
+        on the lower end there may not be much difference. No motors
+        will fire until you want them to do. You can control the motors in
+        three ways, forwards, backwards and stop. forwards and backwards
+        have an optional argument, the power to use. This will change the
+        power attribute. Else the method will use the current value of the
+        power attribute. You can also change the power by changing the
+        value of the power attribute. Remember to cleanup by deleting the
+        object by using the 'del' keyword.
 
         Arguments:
-            p_pwm {int} -- pin connected to the pwm input on the motor controller
-            p_dir {int} -- pin connected to the dir input on the motor controller
+            p_pwm {int} -- pin connected to the pwm input on the
+            motor controller
+            p_dir {int} -- pin connected to the dir input on the
+            motor controller
             initpower {int} -- an initial power to use
         '''
         
@@ -68,6 +73,10 @@ class DCMotor:
         self._motor.ChangeDutyCycle(self.power)
 
     def stop(self):
+        '''Stops the motor from any sort of rotation. Does
+        not change the value of the power attribute.
+        '''
+        
         self._motor.ChangeDutyCycle(0)
 
 #this will only get called when this program is run (not as an import)
