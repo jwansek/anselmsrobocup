@@ -43,4 +43,4 @@ Useful links
 
 >http://rcj.robocup.org/rcj2018/soccer_2018.pdf
 
-2017 rules
+2018 rules
