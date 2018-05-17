@@ -18,15 +18,17 @@ class App(tk.Tk):
         tk.Button(self, text = "Stop", command = self._stop).grid(row = 1, column = 1, pady = 5)
         tk.Button(self, text = "Forwards", command = self._forwards).grid(row = 1, column = 2, pady = 5)
 
-        self._scale = tk.Scale(self, from_ = 0, to = 100, length = 200, orient = tk.HORIZONTAL, command = lambda a: self._onScale(a))
-        self._scale.grid(row = 2, column = 0, columnspan = 3)
-
         p_pwm = simpledialog.askinteger("Input pin", "Input pwm pin:")
         p_dir = simpledialog.askinteger("Input pin", "Input dir pin:")
 
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BOARD)
         self.motor = DCMotor(p_pwm, p_dir, 100)
+
+        tk.Label(self, text = "pwm pin: %i       dir pin: %i" % (p_pwm, p_dir)).grid(row = 2, column = 0, columnspan = 3)
+        
+        self._scale = tk.Scale(self, from_ = 0, to = 100, length = 200, orient = tk.HORIZONTAL, command = lambda a: self._onScale(a))
+        self._scale.grid(row = 3, column = 0, columnspan = 3)
 
     def _backwards(self):
         self.direction = "b"
