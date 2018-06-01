@@ -39,7 +39,7 @@ class DCMotor:
         self.stop()
 
     def __exit__(self):
-        self._motor.stop()
+        self.__del__()
 
     def __del__(self):
         self._motor.stop()
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
 
-    a = DCMotor(5, 3, 100)
+    a = DCMotor(15, 13, 100)
     a.forwards()
     sleep(5)
     a.power = 50
