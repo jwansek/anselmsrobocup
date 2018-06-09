@@ -1,20 +1,10 @@
 // These constants won't change.  They're used to give names
 // to the pins used:
-//############ Arduino Mega Pins ############
-//const int p_pt1 = A0;  // Analog input pin for pt array
-//const int p_pt2 = A1;  
-//const int p_pt3 = A2;  
-//const int p_pt4 = A3;  
-//const int threshold = 700; //thresh for line detection
-//const int p_ping_US_L = 3; //Digital output pin for US_L
-//const int p_echo_US_L = 4; //Digital input pin for US_R
-
-//############ Teensy Pins #############
 const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
-const int threshold = 700; //thresh for line detection
+const int threshold = 600; //thresh for line detection
 const int p_ping_US_L = 1; //Digital output pin for US_L
 const int p_echo_US_L = 0; //Digital input pin for US_R
 
@@ -30,8 +20,8 @@ void loop()
 {
   //Each iteration of the loop change the value of lineOn from 0-4, with 1-4 being
   //which phototransistor array light has been detected and 0 if none were
-  //Serial.print(get_pt_reading());
-  Serial.print(0);
+  Serial.print(get_pt_reading());
+  //Serial.print(0);
   Serial.print("\t");
   //reading of the left ultrasonic sensor
   //Serial.print(get_US_reading(p_ping_US_L, p_echo_US_L));
@@ -53,7 +43,7 @@ void loop()
   // wait 64 milliseconds before the next loop
   // for the analog-to-digital converter to settle
   // after the last reading:
-  delay(128);
+  delay(64);
 }
 
 int get_pt_reading()

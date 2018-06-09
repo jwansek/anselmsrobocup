@@ -2,6 +2,8 @@ from tkinter import *
 from time import sleep
 import serial
 import threading
+import hardware
+import RPi.GPIO as GPIO
 
 ser = serial.Serial("/dev/ttyACM0", 9600, timeout = 1)
 
@@ -27,8 +29,20 @@ class Arduino(threading.Thread):
 if __name__ == "__main__":
     print("Running test program")
     print("Press <Ctrl+C> to end the program")
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+
+    m = hardware.DCMotor(15, 13, 100)
+    m.forwards()
     while True:
         try:
-            print([int(i.decode()) for i in ser.readline().split(b"\t")])
+            rep = [int(i.decode()) for i in ser.readline().split(b"\t")]
+            print(rep)
+            if rep[0] != 0:
+                m.stop()
+            else:
+                m.forwards()
         except ValueError:
             pass
+        except KeyboardInterrupt:
+            del m
