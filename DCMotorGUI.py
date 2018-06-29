@@ -38,17 +38,21 @@ class App(tk.Tk):
         self._scale = tk.Scale(self, from_ = 0, to = 100, length = 200, orient = tk.HORIZONTAL, command = lambda a: self._onScale(a))
         self._scale.grid(row = 3, column = 1, columnspan = 3)
 
+    #called when the user presses the button to move backwards
     def _backwards(self):
         self.direction = "b"
         self.motor.backwards()
 
+    #called when the user presses the button to move forwards
     def _forwards(self):
         self.direction = "f"
         self.motor.forwards()
 
+    #called when the user presses the stop button
     def _stop(self):
         self.motor.stop()
 
+    #called when the user changes the value of the scale widget
     def _onScale(self, power):
         if self.direction == "b":
             self.motor.backwards(float(power))
