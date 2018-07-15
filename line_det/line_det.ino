@@ -87,8 +87,3 @@ int ball_in_capture()
     return 0;
   }
 }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> bee5cee08bc274dd4bff828154838c572a11c58d
