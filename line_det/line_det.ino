@@ -1,29 +1,22 @@
 // These constants won't change.  They're used to give names
 // to the pins used:
-//############ Arduino Mega Pins ############
-//const int p_pt1 = A0;  // Analog input pin for pt array
-//const int p_pt2 = A1;  
-//const int p_pt3 = A2;  
-//const int p_pt4 = A3;  
-//const int threshold = 700; //thresh for line detection
-//const int p_ping_US_L = 3; //Digital output pin for US_L
-//const int p_echo_US_L = 4; //Digital input pin for US_R
 
-//############ Teensy Pins #############
+
+//############  Pins #############
 const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
 const int threshold = 700; //thresh for line detection
-const int p_ping_US_L = 1; //Digital output pin for US_L
-const int p_echo_US_L = 0; //Digital input pin for US_R
+const int p_cap_trig = 52;
+const int p_cap_echo = 53;
 
 void setup() 
 {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
-  pinMode(p_ping_US_L, OUTPUT);
-  pinMode(p_echo_US_L, INPUT);
+  pinMode(p_cap_trig, OUTPUT);
+  pinMode(p_cap_echo, INPUT);
 }
 
 void loop() 
@@ -47,7 +40,7 @@ void loop()
   Serial.print(0);
   Serial.print("\t");
   //Reading of the capture detection
-  Serial.println(9);
+  Serial.println(ball_in_capture());
   
     
   // wait 64 milliseconds before the next loop
@@ -83,5 +76,17 @@ long get_US_reading(int p_ping, int p_echo)
   delayMicroseconds(10);
   digitalWrite(p_ping, LOW);
   return microsecondsToCentimeters(pulseIn(p_echo, HIGH));
+}
+
+int ball_in_capture()
+{
+  if (get_US_reading(p_cap_trig, p_cap_echo) <= 4)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
