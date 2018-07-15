@@ -1,12 +1,6 @@
 // These constants won't change.  They're used to give names
 // to the pins used:
-<<<<<<< HEAD
-
-
 //############  Pins #############
-=======
-//############ Teensy Pins #############
->>>>>>> bee5cee08bc274dd4bff828154838c572a11c58d
 const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
