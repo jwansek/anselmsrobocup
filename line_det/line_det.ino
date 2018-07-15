@@ -1,8 +1,12 @@
 // These constants won't change.  They're used to give names
 // to the pins used:
+<<<<<<< HEAD
 
 
 //############  Pins #############
+=======
+//############ Teensy Pins #############
+>>>>>>> bee5cee08bc274dd4bff828154838c572a11c58d
 const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
@@ -23,8 +27,8 @@ void loop()
 {
   //Each iteration of the loop change the value of lineOn from 0-4, with 1-4 being
   //which phototransistor array light has been detected and 0 if none were
-  Serial.print(get_pt_reading());
-  //Serial.print(0);
+  //Serial.print(get_pt_reading());
+  Serial.print(0);
   Serial.print("\t");
   //reading of the left ultrasonic sensor
   //Serial.print(get_US_reading(p_ping_US_L, p_echo_US_L));
@@ -46,7 +50,7 @@ void loop()
   // wait 64 milliseconds before the next loop
   // for the analog-to-digital converter to settle
   // after the last reading:
-  delay(64);
+  delay(128);
 }
 
 int get_pt_reading()
@@ -90,3 +94,7 @@ int ball_in_capture()
   }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> bee5cee08bc274dd4bff828154838c572a11c58d
