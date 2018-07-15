@@ -24,25 +24,10 @@ class Arduino(threading.Thread):
 
 #this will only be called if THIS program is run, not as a module in another program
 #this is used as a test
-#it's probably better to run this in command than IDLE because IDLE adds loads of
-#latency which makes it look as if the phototransistors aren't working properly
 if __name__ == "__main__":
     print("Running test program")
     print("Press <Ctrl+C> to end the program")
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)
-
-    m = hardware.DCMotor(15, 13, 100)
-    m.forwards()
     while True:
-        try:
-            rep = [int(i.decode()) for i in ser.readline().split(b"\t")]
-            print(rep)
-            if rep[0] != 0:
-                m.stop()
-            else:
-                m.forwards()
-        except ValueError:
-            pass
-        except KeyboardInterrupt:
-            del m
+        rep = [int(i.decode()) for i in ser.readline().split(b"\t")]
+        print(rep)
+

@@ -5,26 +5,25 @@ const int p_pt2 = A1;
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
 const int threshold = 600; //thresh for line detection
-const int p_ping_US_L = 1; //Digital output pin for US_L
-const int p_echo_US_L = 0; //Digital input pin for US_R
+const int p_ping_cap = 52; //Digital output pin for ball capture ultrasonic sensor
+const int p_echo_cap = 50; //Digital input pin for ball capture ultrasonic sensor
 
 void setup() 
 {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
-  pinMode(p_ping_US_L, OUTPUT);
-  pinMode(p_echo_US_L, INPUT);
+  pinMode(p_ping_cap, OUTPUT);
+  pinMode(p_echo_cap, INPUT);
 }
 
 void loop() 
 {
   //Each iteration of the loop change the value of lineOn from 0-4, with 1-4 being
   //which phototransistor array light has been detected and 0 if none were
-  Serial.print(get_pt_reading());
-  //Serial.print(0);
+  //Serial.print(get_pt_reading());
+  Serial.print(0);
   Serial.print("\t");
   //reading of the left ultrasonic sensor
-  //Serial.print(get_US_reading(p_ping_US_L, p_echo_US_L));
   Serial.print(60);
   Serial.print("\t");
   //reading of the right ultrasonic sensor
@@ -37,7 +36,8 @@ void loop()
   Serial.print(0);
   Serial.print("\t");
   //Reading of the capture detection
-  Serial.println(9);
+  Serial.println(get_US_reading(p_ping_cap, p_echo_cap));
+  //Serial.println(0);
   
     
   // wait 64 milliseconds before the next loop

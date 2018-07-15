@@ -54,15 +54,17 @@ class Main:
                 if cam_q_rep is not None:
                     last_cam_q_rep = cam_q_rep
             
-                print(last_ard_q_rep)
                 print("\t\t\t", last_cam_q_rep)
-                line = last_ard_q_rep[0]
-                US_L = last_ard_q_rep[1]
-                US_R = last_ard_q_rep[2]
-                compass = last_ard_q_rep[3]
-                button_on = last_ard_q_rep[4]
-                hasball = last_ard_q_rep[5]
-                bangle = last_cam_q_rep
+                try:
+                    line = last_ard_q_rep[0]
+                    US_L = last_ard_q_rep[1]
+                    US_R = last_ard_q_rep[2]
+                    compass = last_ard_q_rep[3]
+                    button_on = last_ard_q_rep[4]
+                    hasball = last_ard_q_rep[5]
+                    bangle = last_cam_q_rep
+                except IndexError:  
+                    pass
                 
                                             
                 ######  ######  #######  #####  ######     #    #     # 
@@ -73,6 +75,8 @@ class Main:
                 #       #    #  #     # #     # #    #  #     # #     # 
                 #       #     # #######  #####  #     # #     # #     # starts here!
                 #TODO: write the program
+                print(line, US_L, US_R, compass, button_on, hasball)
+                
                 if line:
                     print(text.LINE_DETECTED)
                 sleep(0.0625)

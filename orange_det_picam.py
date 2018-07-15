@@ -28,7 +28,7 @@ class OrangeTrack(threading.Thread):
 
     xres = 928
     yres = 464
-    ycrop = 80
+    ycrop = 110
 
     #top left and bottom right co-ordinates of the rear view mirror
     rvm = ((190, 0), (750, 120))
@@ -38,7 +38,7 @@ class OrangeTrack(threading.Thread):
     fps_times = []
 
     div = int(xres / 130)
-    oval = (int(xres*0.07), int(yres*0.7))
+    oval = (int(xres*0.07), int(yres*0.6))
     
     def __init__(self, q, showgui = True):
         self.q = q
