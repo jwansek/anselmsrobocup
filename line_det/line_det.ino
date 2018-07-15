@@ -5,27 +5,19 @@ const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
-<<<<<<< HEAD
 const int threshold = 600; //thresh for line detection
 const int p_ping_cap = 52; //Digital output pin for ball capture ultrasonic sensor
 const int p_echo_cap = 50; //Digital input pin for ball capture ultrasonic sensor
-=======
-const int threshold = 700; //thresh for line detection
 const int p_cap_trig = 52;
 const int p_cap_echo = 53;
->>>>>>> 8c1d432744d8b2eefb56a93138f36f60b91053d9
 
 void setup() 
 {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
-<<<<<<< HEAD
-  pinMode(p_ping_cap, OUTPUT);
-  pinMode(p_echo_cap, INPUT);
-=======
+
   pinMode(p_cap_trig, OUTPUT);
   pinMode(p_cap_echo, INPUT);
->>>>>>> 8c1d432744d8b2eefb56a93138f36f60b91053d9
 }
 
 void loop() 
@@ -48,12 +40,11 @@ void loop()
   Serial.print(0);
   Serial.print("\t");
   //Reading of the capture detection
-<<<<<<< HEAD
+  
   Serial.println(get_US_reading(p_ping_cap, p_echo_cap));
   //Serial.println(0);
-=======
+  
   Serial.println(ball_in_capture());
->>>>>>> 8c1d432744d8b2eefb56a93138f36f60b91053d9
   
     
   // wait 64 milliseconds before the next loop
@@ -94,11 +85,7 @@ long get_US_reading(int p_ping, int p_echo)
 int ball_in_capture()
 {
   if (get_US_reading(p_cap_trig, p_cap_echo) <= 4)
-  {
     return 1;
-  }
   else
-  {
     return 0;
-  }
 }
