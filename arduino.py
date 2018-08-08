@@ -28,6 +28,8 @@ if __name__ == "__main__":
     print("Running test program")
     print("Press <Ctrl+C> to end the program")
     while True:
-        rep = [int(i.decode()) for i in ser.readline().split(b"\t")]
-        print(rep)
+        try:
+            print([int(i.decode()) for i in ser.readline().split(b"\t")])
+        except ValueError:
+            continue
 

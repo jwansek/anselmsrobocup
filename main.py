@@ -6,8 +6,26 @@ from arduino import Arduino
 from orange_det_picam import OrangeTrack
 from time import sleep
 from large_text import Text
+from hardware import DCMotor
+import RPi.GPIO as GPIO
 import argparse
-    
+
+p_1A_pwm = 3
+p_1A_dir = 5
+p_1B_pwm = 11
+p_1B_dir = 7
+p_2A_pwm = 16
+p_2A_dir = 12
+p_2B_pwm = 13
+p_2B_dir = 15
+initpower = 75
+
+GPIO.setmode(GPIO.BOARD)
+m_1A = DCMotor(p_1A_pwm, p_1A_dir, initpower)
+m_1B = DCMotor(p_1B_pwm, p_1B_dir, initpower)
+m_2A = DCMotor(p_2A_pwm, p_2A_dir, initpower)
+m_2B = DCMotor(p_2B_pwm, p_2B_dir, initpower)
+   
 class Main:
     def __init__(self, use_arduino):        
         
@@ -64,7 +82,7 @@ class Main:
                     hasball = last_ard_q_rep[5]
                     bangle = last_cam_q_rep
                 except IndexError:  
-                    pass
+                    continue
                 
                                             
                 ######  ######  #######  #####  ######     #    #     # 
@@ -77,13 +95,34 @@ class Main:
                 #TODO: write the program
                 print(line, US_L, US_R, compass, button_on, hasball)
                 
-                if line:
-                    print(text.LINE_DETECTED)
+                if hasball:
+                    robot_stop()
+                else:
+                    robot_forwards(compass)
+
                 sleep(0.0625)
             
             except KeyboardInterrupt:
                 print("Exited")
+                robot_stop()
                 break
+
+def robot_forwards(correction):
+    if correction < -5:
+        m_1B.backwards(100)
+        m_1A.forwards(50)
+    elif correction > 5:
+        m_1B.backwards(50)
+        m_1A.forwards(100)
+    else:
+        m_1A.forwards()
+        m_1B.backwards()
+
+def robot_stop():
+    m_1A.stop()
+    m_1B.stop()
+    m_2A.stop()
+    m_2B.stop()
             
 
 #uber-main

@@ -14,9 +14,7 @@ const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
-const int threshold = 600; //thresh for line detection
-const int p_ping_cap = 52; //Digital output pin for ball capture ultrasonic sensor
-const int p_echo_cap = 50; //Digital input pin for ball capture ultrasonic sensor
+const int threshold = 700; //thresh for line detection
 const int p_cap_trig = 52;
 const int p_cap_echo = 53;
 
@@ -40,8 +38,8 @@ void loop()
 {
   //Each iteration of the loop change the value of lineOn from 0-4, with 1-4 being
   //which phototransistor array light has been detected and 0 if none were
-  //Serial.print(get_pt_reading());
-  Serial.print(0);
+  Serial.print(get_pt_reading());
+  //Serial.print(0);
   Serial.print("\t");
   
   //reading of the left ultrasonic sensor
