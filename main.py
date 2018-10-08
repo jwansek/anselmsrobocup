@@ -134,10 +134,21 @@ if __name__ == "__main__":
     ap.add_argument('-a', '--arduino', required=False,
                     help = "Use the arduino's sensor readings",
                     action = 'store_true')
+    ap.add_argument('-s', '--serial_connection', required = True,
+                    help = "Use GPIO or USB serial connection"
+                    action = "store_true")
     args = vars(ap.parse_args())
+
+    if not args['serial_connection'].upper() in ['USB', 'GPIO']:
+        ap.error("Please speciy a correct serial connection option. Must be equal to 'USB' or 'GPIO'.")
+
+    if args['serial_connection'] == "USB":
+        serialconnection = "/dev/ttyACM0"
+    elif args['serial_connection'] == "GPIO":
+        serialconnection = "dev/ttyS0"
     
     main = Main(use_arduino = args["arduino"])
-    arduino = Arduino(main.get_ard_q())
+    arduino = Arduino(main.get_ard_q(), serialport = serialconnection)
     ot = OrangeTrack(main.get_cam_q(), showgui = args["view_camera"])
     arduino.start()
     ot.start()
