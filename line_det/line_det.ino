@@ -14,7 +14,7 @@ const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
-const int threshold = 700; //thresh for line detection
+const int threshold = 500; //thresh for line detection
 const int p_cap_trig = 52;
 const int p_cap_echo = 53;
 

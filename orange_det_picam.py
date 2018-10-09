@@ -31,7 +31,7 @@ class OrangeTrack(threading.Thread):
     ycrop = 110
 
     #top left and bottom right co-ordinates of the rear view mirror
-    rvm = ((190, 0), (750, 120))
+    rvm = ((190, 0), (800, 120))
 
     font = cv2.FONT_HERSHEY_SIMPLEX
     fps_navg = 5 # how many frames to average over for the FPS timer

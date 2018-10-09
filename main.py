@@ -10,14 +10,14 @@ from hardware import DCMotor
 import RPi.GPIO as GPIO
 import argparse
 
-p_1A_pwm = 3
-p_1A_dir = 5
-p_1B_pwm = 11
-p_1B_dir = 7
-p_2A_pwm = 16
-p_2A_dir = 12
-p_2B_pwm = 13
-p_2B_dir = 15
+p_1A_pwm = 16
+p_1A_dir = 12
+p_1B_pwm = 3
+p_1B_dir = 5
+p_2A_pwm = 13
+p_2A_dir = 15
+p_2B_pwm = 11
+p_2B_dir = 7
 initpower = 75
 
 GPIO.setmode(GPIO.BOARD)
@@ -97,6 +97,8 @@ class Main:
                 
                 if hasball:
                     robot_stop()
+                elif line:
+                    robot_stop()
                 else:
                     robot_forwards(compass)
 
@@ -109,14 +111,14 @@ class Main:
 
 def robot_forwards(correction):
     if correction < -5:
-        m_1B.backwards(100)
+        m_1B.forwards(100)
         m_1A.forwards(50)
     elif correction > 5:
-        m_1B.backwards(50)
+        m_1B.forwards(50)
         m_1A.forwards(100)
     else:
         m_1A.forwards()
-        m_1B.backwards()
+        m_1B.forwards()
 
 def robot_stop():
     m_1A.stop()
