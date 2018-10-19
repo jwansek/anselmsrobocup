@@ -4,12 +4,9 @@ import serial
 import threading
 import hardware
 import RPi.GPIO as GPIO
-<<<<<<< HEAD
 
 ser = serial.Serial("/dev/ttyS0", 9600, timeout = 1)
-=======
 import sys
->>>>>>> 1f2cca69edb9c70584ed12d3965e91a4ec2b9121
 
 class Arduino(threading.Thread):
     def __init__ (self, q, serialport):
@@ -33,7 +30,7 @@ class Arduino(threading.Thread):
 if __name__ == "__main__":
     port = sys.argv[1]
     if port == "GPIO":
-        port = "dev/ttyS0"
+        port = "/dev/ttyS0"
     elif port == "USB":
         port = "/dev/ttyACM0"
     else:

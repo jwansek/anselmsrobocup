@@ -51,8 +51,7 @@ void loop()
   Serial.print("\t");
   
   //reading of the compass sensor
-  int headingcorrection = initcompass - get_compass_reading();
-  Serial.print(headingcorrection);
+  Serial.print(get_compass_reading());
   Serial.print("\t");
   
   //if the switch is in the 'on' position
@@ -60,8 +59,8 @@ void loop()
   Serial.print("\t");
   
   //Reading of the capture detection
-  //Serial.println(0);
-  Serial.println(ball_in_capture());
+  Serial.println(0);
+  //Serial.println(ball_in_capture());
   
     
   // wait 64 milliseconds before the next loop
