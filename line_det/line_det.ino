@@ -7,6 +7,9 @@ byte headingData[2];
 int i, headingValue;
 int initcompass;
 
+//If you get a timeout error when uploading over USB, try unplugging the GPIO serial pins. TX/RX.
+//Don't try to upload over GPIO serial, I haven't gotten it to work yet.
+
 // These constants won't change.  They're used to give names
 // to the pins used:
 //############  Pins #############
@@ -17,6 +20,7 @@ const int p_pt4 = A3;
 const int threshold = 700; //thresh for line detection
 const int p_cap_trig = 52;
 const int p_cap_echo = 53;
+const int p_switch = 31;
 
 void setup() 
 {
@@ -32,6 +36,7 @@ void setup()
 
   pinMode(p_cap_trig, OUTPUT);
   pinMode(p_cap_echo, INPUT);
+  pinMode(p_switch, INPUT);
 }
 
 void loop() 
@@ -55,7 +60,7 @@ void loop()
   Serial.print("\t");
   
   //if the switch is in the 'on' position
-  Serial.print(0);
+  Serial.print(get_switch_state());
   Serial.print("\t");
   
   //Reading of the capture detection
@@ -126,4 +131,12 @@ int get_compass_reading()
   }
   headingValue = headingData[0]*256 + headingData[1];  // Put the MSB and LSB together
   return int(headingValue / 10);
+}
+
+int get_switch_state(){
+  //inverse because wire attached to other side of switch
+  if (digitalRead(p_switch) == HIGH)
+    return 0;
+  else
+    return 1;
 }
