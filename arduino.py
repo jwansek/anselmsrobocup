@@ -4,8 +4,6 @@ import serial
 import threading
 import hardware
 import RPi.GPIO as GPIO
-
-ser = serial.Serial("/dev/ttyS0", 9600, timeout = 1)
 import sys
 
 class Arduino(threading.Thread):

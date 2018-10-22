@@ -6,6 +6,7 @@ int slaveAddress;
 byte headingData[2];
 int i, headingValue;
 int initcompass;
+int switch_state;
 
 //If you get a timeout error when uploading over USB, try unplugging the GPIO serial pins. TX/RX.
 //Don't try to upload over GPIO serial, I haven't gotten it to work yet.
@@ -18,9 +19,9 @@ const int p_pt2 = A1;
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
 const int threshold = 700; //thresh for line detection
-const int p_cap_trig = 52;
-const int p_cap_echo = 53;
-const int p_switch = 31;
+const int p_cap_trig = 40;
+const int p_cap_echo = 41;
+const int p_switch = 52;
 
 void setup() 
 {
@@ -41,6 +42,11 @@ void setup()
 
 void loop() 
 {
+  //update compass correction value every time the switch is flipped
+  if (get_switch_state() != switch_state)
+    initcompass = get_compass_reading();
+  switch_state = get_switch_state();
+  
   //Each iteration of the loop change the value of lineOn from 0-4, with 1-4 being
   //which phototransistor array light has been detected and 0 if none were
   Serial.print(get_pt_reading());
@@ -56,16 +62,16 @@ void loop()
   Serial.print("\t");
   
   //reading of the compass sensor
-  Serial.print(get_compass_reading());
+  Serial.print(initcompass - get_compass_reading());
   Serial.print("\t");
   
   //if the switch is in the 'on' position
-  Serial.print(get_switch_state());
+  Serial.print(switch_state);
   Serial.print("\t");
   
   //Reading of the capture detection
-  Serial.println(0);
-  //Serial.println(ball_in_capture());
+  //Serial.println(0);
+  Serial.println(ball_in_capture());
   
     
   // wait 64 milliseconds before the next loop
@@ -133,10 +139,10 @@ int get_compass_reading()
   return int(headingValue / 10);
 }
 
-int get_switch_state(){
-  //inverse because wire attached to other side of switch
+int get_switch_state()
+{
   if (digitalRead(p_switch) == HIGH)
-    return 0;
-  else
     return 1;
+  else
+    return 0;
 }
