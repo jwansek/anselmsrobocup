@@ -19,7 +19,7 @@ const int p_pt2 = A1;
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
 const int threshold = 700; //thresh for line detection
-const int p_cap_trig = 40;
+const int p_cap_trig = 46;
 const int p_cap_echo = 41;
 const int p_switch = 52;
 
