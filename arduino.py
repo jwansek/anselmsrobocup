@@ -5,7 +5,7 @@ import threading
 import hardware
 import RPi.GPIO as GPIO
 
-ser = serial.Serial("/dev/ttyACM0", 9600, timeout = 1)
+ser = serial.Serial("/dev/ttyS0", 9600, timeout = 1)
 
 class Arduino(threading.Thread):
     def __init__ (self, q):
