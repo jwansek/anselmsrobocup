@@ -1,6 +1,7 @@
 blink_dir.py
 Preferences.
 .vs/
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
