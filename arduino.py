@@ -28,7 +28,7 @@ class Arduino(threading.Thread):
 if __name__ == "__main__":
     port = sys.argv[1]
     if port == "GPIO":
-        port = "dev/ttyS0"
+        port = "/dev/ttyS0"
     elif port == "USB":
         port = "/dev/ttyACM0"
     else:

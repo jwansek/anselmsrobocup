@@ -10,14 +10,14 @@ from hardware import DCMotor
 import RPi.GPIO as GPIO
 import argparse
 
-p_1A_pwm = 3
-p_1A_dir = 5
-p_1B_pwm = 11
-p_1B_dir = 7
-p_2A_pwm = 16
-p_2A_dir = 12
-p_2B_pwm = 13
-p_2B_dir = 15
+p_1A_pwm = 16
+p_1A_dir = 12
+p_1B_pwm = 3
+p_1B_dir = 5
+p_2A_pwm = 37
+p_2A_dir = 35
+p_2B_pwm = 38
+p_2B_dir = 40
 initpower = 75
 
 GPIO.setmode(GPIO.BOARD)
@@ -94,11 +94,8 @@ class Main:
                 #       #     # #######  #####  #     # #     # #     # starts here!
                 #TODO: write the program
                 print(line, US_L, US_R, compass, button_on, hasball)
-                
-                if hasball:
-                    robot_stop()
-                else:
-                    robot_forwards(compass)
+
+                robot_backwards(compass, button_on)
 
                 sleep(0.0625)
             
@@ -107,16 +104,33 @@ class Main:
                 robot_stop()
                 break
 
-def robot_forwards(correction):
-    if correction < -5:
-        m_1B.backwards(100)
-        m_1A.forwards(50)
-    elif correction > 5:
-        m_1B.backwards(50)
-        m_1A.forwards(100)
+def robot_forwards(correction, switch):
+    if switch:
+        if correction < -5:
+            m_1B.forwards(100)
+            m_1A.forwards(50)
+        elif correction > 5:
+            m_1B.forwards(50)
+            m_1A.forwards(100)
+        else:
+            m_1A.forwards()
+            m_1B.forwards()
     else:
-        m_1A.forwards()
-        m_1B.backwards()
+        robot_stop()
+
+def robot_backwards(correction, switch):
+    if switch:
+        if correction < -5:
+            m_2B.backwards(50)
+            m_2A.backwards(100)
+        elif correction > 5:
+            m_2B.backwards(100)
+            m_2A.backwards(50)
+        else:
+            m_2A.backwards()
+            m_2B.backwards()
+    else:
+        robot_stop()
 
 def robot_stop():
     m_1A.stop()
@@ -134,18 +148,10 @@ if __name__ == "__main__":
     ap.add_argument('-a', '--arduino', required=False,
                     help = "Use the arduino's sensor readings",
                     action = 'store_true')
-    ap.add_argument('-s', '--serial_connection', required = True,
-                    help = "Use GPIO or USB serial connection"
-                    action = "store_true")
     args = vars(ap.parse_args())
 
-    if not args['serial_connection'].upper() in ['USB', 'GPIO']:
-        ap.error("Please speciy a correct serial connection option. Must be equal to 'USB' or 'GPIO'.")
-
-    if args['serial_connection'] == "USB":
-        serialconnection = "/dev/ttyACM0"
-    elif args['serial_connection'] == "GPIO":
-        serialconnection = "dev/ttyS0"
+    serialconnection = "/dev/ttyACM0"
+    #serialconnection = "dev/ttyS0"
     
     main = Main(use_arduino = args["arduino"])
     arduino = Arduino(main.get_ard_q(), serialport = serialconnection)
