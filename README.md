@@ -1,6 +1,4 @@
-# The St. Anselm's College RoboCup team 2018 repo
-
-Repo for the code for the robots.
+# Repo for the code for the robots.
 
 Works using three .py files. Two of which are responsible for getting the
 'inputs' of the program. 'orange_det_picam.py' and 'arduino.py'. These are
