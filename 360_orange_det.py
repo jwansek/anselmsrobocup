@@ -34,7 +34,7 @@ with picam as camera:
         image = frame.array
         image = cv2.flip(image, -1)
         #cv2.circle(image, (448, 416), 100, (0, 0, 0), -1)
-        image = image[190:yres-275, 225:xres-240].copy()
+        image = image[int(yres/4.8):yres-int(yres/3.318), int(xres/4.053):xres-int(xres/3.8)].copy()
 
         # frame rate calculation and display
         fps_times.append(time.time())
@@ -44,6 +44,7 @@ with picam as camera:
             cv2.putText(image, fps, (0, 15), font, 0.5, (0, 255, 255), 1, cv2.LINE_AA)
         
         cv2.imshow("Press q to exit", image)
+        cv2.imwrite("img3.jpg", image)
         key = cv2.waitKey(1) & 0xFF
 
         stream.truncate(0)

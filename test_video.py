@@ -15,8 +15,10 @@ import picamera
 from picamera.array import PiRGBArray
 import numpy as np
     
-xres = 912
-yres = 912
+#xres = 912
+#yres = 912
+xres = 460
+yres = 460
 
 picam = picamera.PiCamera()
 picam.exposure_compensation = -6
@@ -34,7 +36,7 @@ with picam as camera:
         image = frame.array
         image = cv2.flip(image, -1)
         #cv2.circle(image, (448, 416), 100, (0, 0, 0), -1)
-        image = image[190:yres-275, 225:xres-240].copy()
+        #image = image[int(yres/4.8):yres-int(yres/3.318), int(xres/4.053):xres-int(xres/3.8)].copy()
 
         # frame rate calculation and display
         fps_times.append(time.time())
