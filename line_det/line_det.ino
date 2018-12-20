@@ -1,43 +1,77 @@
+#include <Wire.h>
+//setup compass stuff
+int HMC6352Address = 0x42;
+// This is calculated in the setup() function
+int slaveAddress;
+byte headingData[2];
+int i, headingValue;
+int initcompass;
+int switch_state;
+
+//If you get a timeout error when uploading over USB, try unplugging the GPIO serial pins. TX/RX.
+//Don't try to upload over GPIO serial, I haven't gotten it to work yet.
+
 // These constants won't change.  They're used to give names
 // to the pins used:
+//############  Pins #############
 const int p_pt1 = A0;  // Analog input pin for pt array
 const int p_pt2 = A1;  
 const int p_pt3 = A2;  
 const int p_pt4 = A3;  
-const int threshold = 600; //thresh for line detection
-const int p_ping_US_L = 1; //Digital output pin for US_L
-const int p_echo_US_L = 0; //Digital input pin for US_R
+const int threshold = 700; //thresh for line detection
+const int p_cap_trig = 46;
+const int p_cap_echo = 41;
+const int p_switch = 52;
 
 void setup() 
 {
+  // Shift the device's documented slave address (0x42) 1 bit right
+  // This compensates for how the TWI library only wants the
+  // 7 most significant bits (with the high bit padded with 0)
+  slaveAddress = HMC6352Address >> 1;   // This results in 0x21 as the address to pass to TWI
+  
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
-  pinMode(p_ping_US_L, OUTPUT);
-  pinMode(p_echo_US_L, INPUT);
+  Wire.begin();
+  initcompass = get_compass_reading();  //get initial compass value to calculate correction heading
+
+  pinMode(p_cap_trig, OUTPUT);
+  pinMode(p_cap_echo, INPUT);
+  pinMode(p_switch, INPUT);
 }
 
 void loop() 
 {
+  //update compass correction value every time the switch is flipped
+  if (get_switch_state() != switch_state)
+    initcompass = get_compass_reading();
+  switch_state = get_switch_state();
+  
   //Each iteration of the loop change the value of lineOn from 0-4, with 1-4 being
   //which phototransistor array light has been detected and 0 if none were
   Serial.print(get_pt_reading());
   //Serial.print(0);
   Serial.print("\t");
+  
   //reading of the left ultrasonic sensor
-  //Serial.print(get_US_reading(p_ping_US_L, p_echo_US_L));
   Serial.print(60);
   Serial.print("\t");
+  
   //reading of the right ultrasonic sensor
   Serial.print(60);
   Serial.print("\t");
+  
   //reading of the compass sensor
-  Serial.print(15);
+  Serial.print(initcompass - get_compass_reading());
   Serial.print("\t");
+  
   //if the switch is in the 'on' position
-  Serial.print(0);
+  Serial.print(switch_state);
   Serial.print("\t");
+  
   //Reading of the capture detection
-  Serial.println(9);
+  //Serial.println(0);
+  Serial.println(ball_in_capture());
   
     
   // wait 64 milliseconds before the next loop
@@ -75,3 +109,40 @@ long get_US_reading(int p_ping, int p_echo)
   return microsecondsToCentimeters(pulseIn(p_echo, HIGH));
 }
 
+int ball_in_capture()
+{
+  if (get_US_reading(p_cap_trig, p_cap_echo) <= 4)
+    return 1;
+  else
+    return 0;
+}
+
+int get_compass_reading()
+{
+  // Send a "A" command to the HMC6352
+  // This requests the current heading data
+  Wire.beginTransmission(slaveAddress);
+  Wire.write("A");              // The "Get Data" command
+  Wire.endTransmission();
+  //delay(10);                   // The HMC6352 needs at least a 70us (microsecond) delay
+  // Read the 2 heading bytes, MSB first
+  // The resulting 16bit word is the compass heading in 10th's of a degree
+  // For example: a heading of 1345 would be 134.5 degrees
+  Wire.requestFrom(slaveAddress, 2);        // Request the 2 byte heading (MSB comes first)
+  i = 0;
+  while(Wire.available() && i < 2)
+  { 
+    headingData[i] = Wire.read();
+    i++;
+  }
+  headingValue = headingData[0]*256 + headingData[1];  // Put the MSB and LSB together
+  return int(headingValue / 10);
+}
+
+int get_switch_state()
+{
+  if (digitalRead(p_switch) == HIGH)
+    return 1;
+  else
+    return 0;
+}

@@ -6,8 +6,26 @@ from arduino import Arduino
 from orange_det_picam import OrangeTrack
 from time import sleep
 from large_text import Text
+from hardware import DCMotor
+import RPi.GPIO as GPIO
 import argparse
-    
+
+p_1A_pwm = 16
+p_1A_dir = 12
+p_1B_pwm = 3
+p_1B_dir = 5
+p_2A_pwm = 37
+p_2A_dir = 35
+p_2B_pwm = 38
+p_2B_dir = 40
+initpower = 75
+
+GPIO.setmode(GPIO.BOARD)
+m_1A = DCMotor(p_1A_pwm, p_1A_dir, initpower)
+m_1B = DCMotor(p_1B_pwm, p_1B_dir, initpower)
+m_2A = DCMotor(p_2A_pwm, p_2A_dir, initpower)
+m_2B = DCMotor(p_2B_pwm, p_2B_dir, initpower)
+   
 class Main:
     def __init__(self, use_arduino):        
         
@@ -54,15 +72,17 @@ class Main:
                 if cam_q_rep is not None:
                     last_cam_q_rep = cam_q_rep
             
-                print(last_ard_q_rep)
                 print("\t\t\t", last_cam_q_rep)
-                line = last_ard_q_rep[0]
-                US_L = last_ard_q_rep[1]
-                US_R = last_ard_q_rep[2]
-                compass = last_ard_q_rep[3]
-                button_on = last_ard_q_rep[4]
-                hasball = last_ard_q_rep[5]
-                bangle = last_cam_q_rep
+                try:
+                    line = last_ard_q_rep[0]
+                    US_L = last_ard_q_rep[1]
+                    US_R = last_ard_q_rep[2]
+                    compass = last_ard_q_rep[3]
+                    button_on = last_ard_q_rep[4]
+                    hasball = last_ard_q_rep[5]
+                    bangle = last_cam_q_rep
+                except IndexError:  
+                    continue
                 
                                             
                 ######  ######  #######  #####  ######     #    #     # 
@@ -73,13 +93,50 @@ class Main:
                 #       #    #  #     # #     # #    #  #     # #     # 
                 #       #     # #######  #####  #     # #     # #     # starts here!
                 #TODO: write the program
-                if line:
-                    print(text.LINE_DETECTED)
+                print(line, US_L, US_R, compass, button_on, hasball)
+
+                robot_backwards(compass, button_on)
+
                 sleep(0.0625)
             
             except KeyboardInterrupt:
                 print("Exited")
+                robot_stop()
                 break
+
+def robot_forwards(correction, switch):
+    if switch:
+        if correction < -5:
+            m_1B.forwards(100)
+            m_1A.forwards(50)
+        elif correction > 5:
+            m_1B.forwards(50)
+            m_1A.forwards(100)
+        else:
+            m_1A.forwards()
+            m_1B.forwards()
+    else:
+        robot_stop()
+
+def robot_backwards(correction, switch):
+    if switch:
+        if correction < -5:
+            m_2B.backwards(50)
+            m_2A.backwards(100)
+        elif correction > 5:
+            m_2B.backwards(100)
+            m_2A.backwards(50)
+        else:
+            m_2A.backwards()
+            m_2B.backwards()
+    else:
+        robot_stop()
+
+def robot_stop():
+    m_1A.stop()
+    m_1B.stop()
+    m_2A.stop()
+    m_2B.stop()
             
 
 #uber-main
@@ -92,9 +149,12 @@ if __name__ == "__main__":
                     help = "Use the arduino's sensor readings",
                     action = 'store_true')
     args = vars(ap.parse_args())
+
+    serialconnection = "/dev/ttyACM0"
+    #serialconnection = "dev/ttyS0"
     
     main = Main(use_arduino = args["arduino"])
-    arduino = Arduino(main.get_ard_q())
+    arduino = Arduino(main.get_ard_q(), serialport = serialconnection)
     ot = OrangeTrack(main.get_cam_q(), showgui = args["view_camera"])
     arduino.start()
     ot.start()
