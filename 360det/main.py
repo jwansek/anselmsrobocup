@@ -3,7 +3,6 @@
 
 import queue as Queue
 from arduino import Arduino
-from 360-orangedet import OrangeDet
 from time import sleep
 from large_text import Text
 from hardware import DCMotor
@@ -23,7 +22,7 @@ initpower = 75
 GPIO.setmode(GPIO.BOARD)
 m_1A = DCMotor(p_1A_pwm, p_1A_dir, initpower)
 m_1B = DCMotor(p_1B_pwm, p_1B_dir, initpower)
-m_2A = DCMotor(p_2A_pwm, p_2A_dir, initpower)
+m_2A = DCMotor(p_2A_pwm, p_2A_dir, initpower, True)
 m_2B = DCMotor(p_2B_pwm, p_2B_dir, initpower)
    
 class Main:
@@ -96,7 +95,7 @@ class Main:
                 print(line, US_L, US_R, compass, button_on, hasball)
 
                 if not hasball:
-                    robot_backwards(compass, button_on)
+                    robot_forwards_(compass, button_on)
 
                 sleep(0.0625)
             
@@ -121,8 +120,8 @@ def robot_forwards(correction, switch):
         else:
             m_1A.backwards(75)
             m_1B.backwards(75)
-            m_2A.forwards(75)
-            m_2B.forwards(75)
+            #m_2A.forwards(75)
+            #m_2B.forwards(75)
     else:
         robot_stop()
 
@@ -146,6 +145,40 @@ def robot_backwards(correction, switch):
     else:
         robot_stop()
 
+def robot_left(correction, switch):
+    if switch:
+        m_1A.forwards()
+        m_2A.forwards()
+        m_1B.backwards()
+        m_2B.backwards()
+
+def robot_backwards(correction, switch):
+    if switch:
+        m_1A.backwards()
+        m_2A.backwards()
+        m_1B.forwards()
+        m_2B.forwards()
+
+def robot_forwards_left(correction, switch):
+    if switch:
+        m_1B.backwards()
+        m_2A.forwards()
+
+def robot_forwards_right(correction, switch):
+    if switch:
+        m_1A.backwards()
+        m_2B.forwards()
+
+def robot_backwards_right(correction, switch):
+    if switch:
+        m_1B.forwards()
+        m_2A.backwards()
+
+def robot_forwards_left(correction, switch):
+    if switch:
+        m_1A.forwards()
+        m_2B.backwards()
+
 def robot_stop():
     m_1A.stop()
     m_1B.stop()
@@ -155,6 +188,7 @@ def robot_stop():
 
 #uber-main
 if __name__ == "__main__":
+    from orangedet import OrangeDet
     ap = argparse.ArgumentParser()
     ap.add_argument('-v', '--view_camera', required=False,
                     help = "Show the camera's view. More fps if disabled",
@@ -169,7 +203,7 @@ if __name__ == "__main__":
     
     main = Main(use_arduino = args["arduino"])
     arduino = Arduino(main.get_ard_q())
-    ot = OrangeTrack(main.get_cam_q(), showgui = args["view_camera"])
+    ot = OrangeDet(main.get_cam_q(), showgui = args["view_camera"])
     arduino.start()
     ot.start()
     main.mainloop()

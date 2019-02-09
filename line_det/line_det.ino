@@ -14,11 +14,11 @@ int switch_state;
 // These constants won't change.  They're used to give names
 // to the pins used:
 //############  Pins #############
-const int p_pt1 = A0;  // Analog input pin for pt array
-const int p_pt2 = A1;  
-const int p_pt3 = A2;  
+const int p_pt1 = A15;  // Analog input pin for pt array
+const int p_pt2 = A14;  
+const int p_pt3 = A13;  
 const int p_pt4 = A3;  
-const int threshold = 700; //thresh for line detection
+const int threshold = 900; //thresh for line detection
 const int p_cap_trig = 46;
 const int p_cap_echo = 41;
 const int p_switch = 52;

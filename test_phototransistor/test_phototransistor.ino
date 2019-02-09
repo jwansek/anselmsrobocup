@@ -1,4 +1,4 @@
-const int p_in = A0;
+const int p_in = A8;
 
 void setup() {
   // put your setup code here, to run once:
