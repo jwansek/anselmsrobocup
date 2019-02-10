@@ -9,14 +9,14 @@ from hardware import DCMotor
 import RPi.GPIO as GPIO
 import argparse
 
-p_1A_pwm = 11
-p_1A_dir = 12
-p_1B_pwm = 5
-p_1B_dir = 8
+p_1A_pwm = 31
+p_1A_dir = 13
+p_1B_pwm = 33
+p_1B_dir = 11
 p_2A_pwm = 37
 p_2A_dir = 35
-p_2B_pwm = 40
-p_2B_dir = 38
+p_2B_pwm = 38
+p_2B_dir = 40
 initpower = 75
 
 GPIO.setmode(GPIO.BOARD)
@@ -120,8 +120,8 @@ def robot_forwards(correction, switch):
         else:
             m_1A.backwards(75)
             m_1B.backwards(75)
-            #m_2A.forwards(75)
-            #m_2B.forwards(75)
+            m_2A.forwards(75)
+            m_2B.forwards(75)
     else:
         robot_stop()
 
