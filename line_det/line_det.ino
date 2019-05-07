@@ -22,6 +22,7 @@ const int threshold = 900; //thresh for line detection
 const int p_cap_trig = 46;
 const int p_cap_echo = 41;
 const int p_switch = 52;
+const int p_us_l = 51;
 
 void setup() 
 {

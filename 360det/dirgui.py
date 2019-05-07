@@ -1,7 +1,9 @@
+import main
+main.robot_stop()
+
 import queue as Queue
 import tkinter as tk
 from tkinter import ttk
-import main
 from arduino import Arduino
 from PIL import Image
 

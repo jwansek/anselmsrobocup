@@ -23,7 +23,7 @@ GPIO.setmode(GPIO.BOARD)
 m_1A = DCMotor(p_1A_pwm, p_1A_dir, initpower)
 m_1B = DCMotor(p_1B_pwm, p_1B_dir, initpower)
 m_2A = DCMotor(p_2A_pwm, p_2A_dir, initpower, True)
-m_2B = DCMotor(p_2B_pwm, p_2B_dir, initpower)
+m_2B = DCMotor(p_2B_pwm, p_2B_dir, initpower, True)
    
 class Main:
     def __init__(self, use_arduino):        
@@ -95,7 +95,7 @@ class Main:
                 print(line, US_L, US_R, compass, button_on, hasball)
 
                 if not hasball:
-                    robot_forwards_(compass, button_on)
+                    robot_forwards(compass, button_on)
 
                 sleep(0.0625)
             
@@ -127,21 +127,21 @@ def robot_forwards(correction, switch):
 
 def robot_backwards(correction, switch):
     if switch:
-        if correction < -5:
-            m_1B.forwards(50)
-            m_1A.forwards(50)
-            m_2B.backwards(50)
-            m_2A.backwards(100)
-        elif correction > 5:
-            m_1B.forwards(50)
-            m_1A.forwards(50)
-            m_2B.backwards(100)
-            m_2A.backwards(50)
-        else:
-            m_1B.forwards(75)
-            m_1A.forwards(75)
-            m_2A.backwards(75)
-            m_2B.backwards(75)
+##        if correction < -5:
+##            m_1B.forwards(50)
+##            m_1A.forwards(50)
+##            m_2B.backwards(50)
+##            m_2A.backwards(100)
+##        elif correction > 5:
+##            m_1B.forwards(50)
+##            m_1A.forwards(50)
+##            m_2B.backwards(100)
+##            m_2A.backwards(50)
+##        else:
+        m_1B.forwards(75)
+        m_1A.backwards(75)
+        m_2A.backwards(75)
+        m_2B.forwards(75)
     else:
         robot_stop()
 
@@ -151,13 +151,6 @@ def robot_left(correction, switch):
         m_2A.forwards()
         m_1B.backwards()
         m_2B.backwards()
-
-def robot_backwards(correction, switch):
-    if switch:
-        m_1A.backwards()
-        m_2A.backwards()
-        m_1B.forwards()
-        m_2B.forwards()
 
 def robot_forwards_left(correction, switch):
     if switch:
